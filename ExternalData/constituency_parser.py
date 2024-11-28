@@ -1,6 +1,4 @@
-import pandas as pd
-from io import StringIO
-import lxml.etree as etree
+import re
 
 
 # @cached(cache=TTLCache(maxsize=1, ttl=600))
@@ -18,9 +16,7 @@ def main():
         def __init__(self, word_id, word, lemma, root, pos):
             self.word_id = word_id  # Unique identifier for the word
             self.word = word  # The word itself
-            self.lemma = lemma  # Lemma of the word
             self.root = root  # Root of the word (if applicable)
-            self.pos = pos  # Part of Speech tag
             self.head = None  # The head word (e.g., the predicate or parent word in the tree)
             self.dep_type = None  # Dependency type (subject, object, etc.)
 
@@ -76,15 +72,22 @@ def main():
     sentences = root.findall('.//tei:s', namespaces=namespaces)
 
     for sentence in sentences:
-        words = sentence.findall(".//tei:w", namespaces=namespaces)
+        w_tags = sentence.findall(".//tei:w", namespaces=namespaces)
         phrases = sentence.findall(".//tei:phrase", namespaces=namespaces)
 
-        for word in words:
-            print(word.attrib["dtoken"])
-            phraseId = word.findall(".//tei:m", namespaces=namespaces)
-            for id in phraseId:
+        for w_tag in w_tags:
+            # print(w_tag.attrib["dtoken"])
+            word = w_tag.attrib["dtoken"].split('_')[0]
+            root = re.sub(r'[^\u0590-\u05FF]$', '', w_tag.attrib["lemma"])
+            # print(word)
+            # job = w_tag.attrib["dtoken"].split('_')[-2]
+            job = w_tag.attrib["dtoken"].rsplit('_', 1)[]
+            print(job)
+            phrase_id = w_tag.findall(".//tei:m", namespaces=namespaces)
+            for id in phrase_id:
                 if "phraseId" in id.attrib:
-                    print(id.attrib["phraseId"])
+                    pass
+                    # print(id.attrib["phraseId"])
         input("stop")
 
 
