@@ -65,7 +65,7 @@ class TeaminTreeNode:
 
     def size(self):
         if not self.left and not self.right:
-            return 0
+            return 1
         left_size = self.left.size() if self.left else 0
         right_size = self.right.size() if self.right else 0
         return 1 + left_size + right_size

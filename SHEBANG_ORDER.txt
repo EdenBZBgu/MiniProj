@@ -1,0 +1,61 @@
+<s DisplayName_Eng="Pasuk 1" DisplayName_Heb="פסוק א" type="pasuk" xml:id="Tanakh.Torah.Genesis.1.1" unit="small">
+
+<w dtoken="בראשת_רֵאשִׁית/__subs_f-sg" id="1" lemma="רֵאשִׁית/" root="ראשׁ">בְּרֵאשִׁ֖ית
+	<m ana="#PREFIX_FUNCTION_PREPOSITION" baseform="ב" phraseId="n605144" type="prefix">ב
+	</m>
+	<m ana=" #BASEFORM_POS_NOUN #BASEFORM_GENDER_FEMININE #BASEFORM_NUMBER_SINGULAR #BASEFORM_STATUS_ABSOLUTE" baseform="רֵאשִׁית/" phraseId="n605144" type="root">ראשית
+	</m>
+</w>
+ 
+<w dtoken="ברא_ברא[__verb_qal-p3-perf_m-sg" id="1" lemma="ברא[" root="ברא">בָּרָ֣א
+	<m ana=" #BASEFORM_POS_VERB #BASEFORM_GENDER_MASCULINE #BASEFORM_NUMBER_SINGULAR #BASEFORM_PERSON_3 #BASEFORM_TENSE_PAST #BASEFORM_BINYAN_PAAL" baseform="ברא[" phraseId="n605145" type="root">ברא
+	</m>
+</w> 
+
+<w dtoken="אלהם_אֱלֹהִים/__subs_m-pl" id="1" lemma="אֱלֹהִים/" root="ללא-שורש">אֱלֹהִ֑ים
+	<m ana=" #BASEFORM_POS_NOUN #BASEFORM_GENDER_MASCULINE #BASEFORM_NUMBER_PLURAL #BASEFORM_STATUS_ABSOLUTE" baseform="אֱלֹהִים/" phraseId="n605146" type="root">אלהים
+	</m>
+	<m ana=" #SUFFIX_NOMINAL_ENDING" baseform="ִ֜ים" type="suffix">ִ֜ים
+	</m>
+</w>
+
+<w dtoken="את_אֵת__prep_NA-NA" id="1" lemma="אֵת" root="ללא-שורש">אֵ֥ת
+	<m ana=" #BASEFORM_POS_PREPOSITION" baseform="אֵת" phraseId="n605147" type="root">את
+	</m>
+</w> 
+
+<w dtoken="השמים_שָׁמַיִם/__subs_m-pl" id="1" lemma="שָׁמַיִם/" root="ללא-שורש">הַשָּׁמַ֖יִם
+	<m ana="#PREFIX_FUNCTION_DEFINITEARTICLE" baseform="ה" phraseId="n605147" type="prefix">ה
+	</m>
+	<m ana=" #BASEFORM_POS_NOUN #BASEFORM_GENDER_MASCULINE #BASEFORM_NUMBER_PLURAL #BASEFORM_STATUS_ABSOLUTE" baseform="שָׁמַיִם/" phraseId="n605147" type="root">שמים
+	</m>
+	<m ana=" #SUFFIX_NOMINAL_ENDING" baseform="ִ֜מ" type="suffix">ִ֜מ
+	</m>
+</w> 
+
+<w dtoken="ואת_אֵת__prep_NA-NA" id="1" lemma="אֵת" root="ללא-שורש">וְאֵ֥ת
+	<m ana="#PREFIX_FUNCTION_CONJUNCTION" baseform="ו" phraseId="n605147" type="prefix">ו
+	</m>
+	<m ana=" #BASEFORM_POS_PREPOSITION" baseform="אֵת" phraseId="n605147" type="root">את
+	</m>
+</w>
+
+<w dtoken="הארץ_אֶרֶץ/__subs_x-sg" id="1" lemma="אֶרֶץ/" root="ארץ">הָאָֽרֶץ
+	<m ana="#PREFIX_FUNCTION_DEFINITEARTICLE" baseform="ה" phraseId="n605147" type="prefix">ה
+	</m>
+	<m ana=" #BASEFORM_POS_NOUN #BASEFORM_GENDER_MASCULINEFEMININE #BASEFORM_NUMBER_SINGULAR #BASEFORM_STATUS_ABSOLUTE" baseform="אֶרֶץ/" phraseId="n605147" type="root">ארץ
+	</m>
+</w>
+
+
+׃ <syntacticInfo>
+	<sentence id="n1125833" unit="small">
+		<clause complete="1" id="n426582" type="xQtX">
+			<phrase function="Time" id="n605144" type="PP"/>
+			<phrase function="Pred" id="n605145" type="VP"/>
+			<phrase function="Subj" id="n605146" type="NP"/>
+			<phrase function="Objc" id="n605147" type="PP"/>
+		</clause>
+	</sentence>
+</syntacticInfo>
+</s>

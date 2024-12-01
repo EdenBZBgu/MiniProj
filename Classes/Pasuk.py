@@ -17,7 +17,7 @@ class Pasuk:
         self.teamim_tree = TeamimTree(self._pasuk_id)
 
     def build_constituency_tree(self):
-        pass
+        self.constituency_tree = ConstituencyTree(self._pasuk_id, 1)
 
     def build_dependency_tree(self):
         pass
