@@ -5,6 +5,7 @@ def main():
     #p1 = Pasuk("1_1_1", "בראשית ברא אלהים את השמים ואת הארץ")
     p2 = Pasuk("Tanakh.Torah.Genesis.1.1", "בראשית ברא אלהים את השמים ואת הארץ")
     p2.build_constituency_tree()
+    p2.constituency_tree.print_tree()
     # p1.build_teamim_tree()
     # p1.teamim_tree.print_tree()
     #

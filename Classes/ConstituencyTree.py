@@ -21,27 +21,47 @@ def build(word_list : []) -> ConstituencyTreeNode:
     if not word_list:
         return ConstituencyTreeNode("", "", "", "", "")
 
-    # word_data = {
-    #     "word"
-    #     "phrase_id"
-    #     "root"
-    #     "phrase_type"
-    #     "feature"
-    #     "function"
-    # }
+    sentence = " ".join([word["word"] for word in word_list])
+    root = ConstituencyTreeNode("", sentence, "","s", "")
+
+    dict = {}
+    for word in word_list:
+        id = word["phrase_id"]
+        dict.setdefault(id, []).append(word)
+        # if id in dict:
+        #     dict[id] = dict[id].append(word)
+        # else:
+        #     dict[id] = [word]
+
+    for id in dict:
+        root.children.append(inner_build(dict[id],id))
+
+    return root
 
 def inner_build(word_list : [], phrase_id: str):
     phrase = " ".join([word["word"] for word in word_list])
-    node = ConstituencyTreeNode(phrase_id, phrase, word_list[0]["function"], word_list[0]["phrase_type"], "")
+    node = ConstituencyTreeNode(phrase_id, phrase, word_list[0]["phrase_function"], word_list[0]["phrase_type"], "")
 
-    for word in word_list:
+    for i, word in enumerate(word_list):
         node.children.append(ConstituencyTreeNode(phrase_id, word, "",
-                             word_list[0]["feature"],
-                             word_list[0]["root"]))
+                             word_list[i]["feature"],
+                             word_list[i]["root"]))
+    return node
 
 class ConstituencyTree(BaseTree):
     def print_tree(self):
-        pass
+        if not self.root:
+            print("(empty tree)")
+            return
+        self.__print_tree(self.root, 0)
+
+    def __print_tree(self, node, level):
+        # Indent based on the level of the node
+        indent = "  " * level
+        print(f"{indent}{node.phrase_id} ({node.feature_or_phrase_type}): {node.val}")
+
+        for child in node.children:
+            self.__print_tree(child, level + 1)
 
     def __init__(self, pasuk_id, book_id):
         self.root = build(get_pasuk_parsed(book_id, pasuk_id))
