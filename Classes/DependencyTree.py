@@ -4,11 +4,12 @@ from dependency_parser import get_pasuk_parsed
 
 class DependencyTreeNode:
 
-    def __init__(self, index: int, val: str, children, dependencies):
+    def __init__(self, index: int, val: str, children, parent, dependency):
         self.index = index
         self.val = val
         self.children = children
-        self.dependencies = dependencies
+        self.parent = parent
+        self.dependency = dependency
 
 def build(dictaParsedPasuk) -> DependencyTreeNode:
 
@@ -19,18 +20,21 @@ def build(dictaParsedPasuk) -> DependencyTreeNode:
             index=idx,
             val=token['token'],
             children=[],
-            dependencies=[]
+            parent=None,
+            dependency=None
         )
 
     for idx, token in enumerate(dictaParsedPasuk['tokens']):
         parent = token['syntax']['dep_head_idx']
         dependency = token['syntax']['dep_func']
         if parent != -1:
+            nodes[idx].parent = parent
             nodes[parent].children.append(nodes[idx])
-            nodes[parent].dependencies.append(dependency)
+            nodes[idx].dependency = dependency
 
     root_idx = dictaParsedPasuk['root_idx']
     root = nodes[root_idx]
+    root.dependency = 'root'
 
     return root
 
@@ -62,7 +66,7 @@ class DependencyTree(BaseTree):
     def print_tree(self):
 
         def _print_subtree(node, level=0):
-            print("    " * level + f"{node.val} (index: {node.index}, dep: {node.dependencies[0] if node.dependencies else 'None'})")
+            print("    " * level + f"{node.val} (index: {node.index}, dep: {node.dependency if node.dependency else 'None'})")
             for child in node.children:
                 _print_subtree(child, level + 1)
 
@@ -70,3 +74,6 @@ class DependencyTree(BaseTree):
             _print_subtree(self.root)
         else:
             print("Tree is empty.")
+
+
+

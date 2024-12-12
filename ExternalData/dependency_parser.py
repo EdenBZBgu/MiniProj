@@ -37,8 +37,15 @@ def get_pasuk_encoded_dependency(pasuk_id: str, constituency):
             return sentence.strip()
 
 
-def parse_pasuk_dicta_dependency(pasuk, tokenizer = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint'), model = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True).eval()):
-    return model.predict([pasuk], tokenizer, output_style='json')
+def parse_pasuk_dicta_dependency(pasuk, tokenizer = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint'), model = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True)):
+    model.eval()
+    result = model.predict([pasuk], tokenizer, output_style='json')
+
+    if isinstance(result, list) and len(result) > 0:
+        print(result[0])
+        return result[0]
+
+    raise ValueError("Unexpected format for the parsed output.")
 
 def get_pasuk_parsed(pasuk_id: str):
     constituency = load_torah_dependency()
