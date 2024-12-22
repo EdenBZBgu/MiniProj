@@ -1,5 +1,5 @@
-from BaseTree import BaseTree
-from dependency_parser import get_pasuk_parsed
+from Classes.BaseTree import BaseTree
+from ExternalData.dependency_parser import get_pasuk_parsed
 
 
 class DependencyTreeNode:
@@ -11,8 +11,30 @@ class DependencyTreeNode:
         self.parent = parent
         self.dependency = dependency
 
-def build(dictaParsedPasuk) -> DependencyTreeNode:
+    def serialize(self):
+        if not self.children:
+            return {
+                "index": self.index,
+                "val": self.val,
+                "dependency": self.dependency
+            }
+        return {
+            "index": self.index,
+            "val": self.val,
+            "dependency": self.dependency,
+            "children": [child.serialize() for child in self.children]
+        }
 
+    @staticmethod
+    def deserialize(data):
+        if not data:
+            return None
+        node = DependencyTreeNode(data["index"], data["val"], [], None, data["dependency"])
+        node.children = [DependencyTreeNode.deserialize(child) for child in data["children"]]
+        return node
+
+
+def build(dictaParsedPasuk) -> DependencyTreeNode:
     nodes = {}
 
     for idx, token in enumerate(dictaParsedPasuk['tokens']):
@@ -42,7 +64,11 @@ def build(dictaParsedPasuk) -> DependencyTreeNode:
 class DependencyTree(BaseTree):
 
     def __init__(self, pasuk_id):
-        self.root = build(get_pasuk_parsed(pasuk_id))
+        self.root = None
+        self.pasuk_id = pasuk_id
+
+    def build_tree(self):
+        self.root = build(get_pasuk_parsed(self.pasuk_id))
 
     def height(self):
 
@@ -74,6 +100,16 @@ class DependencyTree(BaseTree):
             _print_subtree(self.root)
         else:
             print("Tree is empty.")
+
+    def serialize(self):
+        if not self.root:
+            return None
+        return self.root.serialize()
+
+    @staticmethod
+    def deserialize(data):
+        root = DependencyTreeNode.deserialize(data)
+        return root
 
 
 
