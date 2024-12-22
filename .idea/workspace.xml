@@ -5,8 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9392d97b-5ef3-42a2-b79f-2080346ec062" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Classes/Torah.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExternalData/Deuteronomy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExternalData/Exodus.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExternalData/Genesis.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExternalData/Leviticus.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExternalData/Numbers.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ExternalData/torah.xlsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/torah_dmp.pkl" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/BaseTree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/BaseTree.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Classes/ConstituencyTree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/ConstituencyTree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/DependencyTree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/DependencyTree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/Pasuk.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/Pasuk.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Classes/TeamimTree.py" beforeDir="false" afterPath="$PROJECT_DIR$/Classes/TeamimTree.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExternalData/dependency_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExternalData/dependency_parser.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ExternalData/teamim_parser.py" beforeDir="false" afterPath="$PROJECT_DIR$/ExternalData/teamim_parser.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -51,28 +66,32 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Python.constituency_parser.executor&quot;: &quot;Run&quot;,
-    &quot;Python.constituency_parser_updated.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;constituency&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/edenb/Desktop/MiniProj&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.constituency_parser.executor": "Run",
+    "Python.constituency_parser_updated.executor": "Run",
+    "Python.run.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "git-widget-placeholder": "chovav__unify__and__pickle",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "/Users/chovavwigman/BGU/05-NLP/MiniProj/ExternalData",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ExternalData" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/ExternalData" />
       <recent name="$PROJECT_DIR$/Classes" />
       <recent name="$PROJECT_DIR$/Data" />
       <recent name="$PROJECT_DIR$" />
@@ -81,7 +100,6 @@
   <component name="RunManager" selected="Python.run">
     <configuration name="constituency_parser" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MiniProj" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -104,7 +122,6 @@
     </configuration>
     <configuration name="constituency_parser_updated" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MiniProj" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -127,7 +144,6 @@
     </configuration>
     <configuration name="run" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MiniProj" />
-      <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -181,15 +197,27 @@
       <workItem from="1732784689134" duration="3272000" />
       <workItem from="1732979994226" duration="11594000" />
       <workItem from="1733661129971" duration="3367000" />
+      <workItem from="1734379453942" duration="13871000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
   </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/ExternalData/teamim_parser.py</url>
+          <line>26</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+  </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/MiniProj$run.coverage" NAME="run Coverage Results" MODIFIED="1733664474194" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/MiniProj$constituency_parser.coverage" NAME="constituency_parser Coverage Results" MODIFIED="1733055722404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ExternalData" />
     <SUITE FILE_PATH="coverage/MiniProj$constituency_parser_updated.coverage" NAME="constituency_parser_updated Coverage Results" MODIFIED="1733060906372" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ExternalData" />
+    <SUITE FILE_PATH="coverage/MiniProj$run.coverage" NAME="run Coverage Results" MODIFIED="1734381443511" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/MiniProj$constituency_parser.coverage" NAME="constituency_parser Coverage Results" MODIFIED="1733055722404" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/ExternalData" />
   </component>
 </project>

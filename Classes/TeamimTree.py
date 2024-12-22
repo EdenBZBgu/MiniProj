@@ -12,7 +12,7 @@ Kings = {
     "85": "Zaqef gadol",
     "73": "Tipcha",
 }
-Dukes = {"81": "Reviii", "03": "Pashta", "02": "Zarka", "10": "Yetiv", "91": "Tevir"}
+Dukes = {"81": "Revii", "03": "Pashta", "02": "Zarka", "10": "Yetiv", "91": "Tevir"}
 Counts = {
     "83": "Pazer",
     "84": "Karnei Para",
@@ -70,10 +70,32 @@ class TeaminTreeNode:
         right_size = self.right.size() if self.right else 0
         return 1 + left_size + right_size
 
+    def serialize(self):
+        if not self.left and not self.right:
+            return {"symbols": self.symbols}
+        return {
+            "symbols": self.symbols,
+            "left": self.left.serialize() if self.left else None,
+            "right": self.right.serialize() if self.right else None,
+        }
+
+    @staticmethod
+    def deserialize(data):
+        if not data:
+            return None
+        node = TeaminTreeNode(data["symbols"])
+        node.left = TeaminTreeNode.deserialize(data["left"])
+        node.right = TeaminTreeNode.deserialize(data["right"])
+        return node
+
 
 class TeamimTree(BaseTree):
     def __init__(self, pasuk_id, text=""):
-        encoded_teamim = get_pasuk_encoded_teamim(pasuk_id).strip()
+        self.pasuk_id = pasuk_id
+        self.root = None
+
+    def build_tree(self):
+        encoded_teamim = get_pasuk_encoded_teamim(self.pasuk_id)
         symbols = [w for w in encoded_teamim.split("/") if w]
         self.root = self.build(TeaminTreeNode(symbols))
 
@@ -107,3 +129,11 @@ class TeamimTree(BaseTree):
         if not self.root:
             return "No tree"
         return self.root.print_tree(is_root=True)
+
+    def serialize(self):
+        return self.root.serialize()
+
+    @staticmethod
+    def deserialize(data):
+        root = TeaminTreeNode.deserialize(data)
+        return root

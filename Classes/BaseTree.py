@@ -16,3 +16,14 @@ class BaseTree(ABC):
     def print_tree(self):
         """Prints the tree"""
         raise NotImplementedError
+
+    @abstractmethod
+    def serialize(self):
+        """Returns a string representation of the tree"""
+        raise NotImplementedError
+
+    @staticmethod
+    @abstractmethod
+    def deserialize(data):
+        """Returns a tree object from a string representation"""
+        raise NotImplementedError

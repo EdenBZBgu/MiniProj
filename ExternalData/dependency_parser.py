@@ -8,7 +8,7 @@ books = ["Genesis.xml", "Exodus.xml", "Leviticus.xml", "Numbers.xml", "Deuterono
 
 def process_book(file_path):
     book_dict = {}
-    xml_tree = ET.parse(file_path)
+    xml_tree = ET.parse("ExternalData/" + file_path)
     root = xml_tree.getroot()
     sentences = root.findall('.//tei:s', namespaces=namespaces)
 
@@ -37,12 +37,15 @@ def get_pasuk_encoded_dependency(pasuk_id: str, constituency):
             return sentence.strip()
 
 
-def parse_pasuk_dicta_dependency(pasuk, tokenizer = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint'), model = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True)):
+def parse_pasuk_dicta_dependency(
+    pasuk,
+    tokenizer = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint'),
+    model = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True)
+):
     model.eval()
     result = model.predict([pasuk], tokenizer, output_style='json')
 
     if isinstance(result, list) and len(result) > 0:
-        print(result[0])
         return result[0]
 
     raise ValueError("Unexpected format for the parsed output.")
