@@ -50,17 +50,8 @@ def parse_pasuk_dicta_dependency(
 
     raise ValueError("Unexpected format for the parsed output.")
 
+
 def get_pasuk_parsed(pasuk_id: str):
     constituency = load_torah_dependency()
     pasuk = get_pasuk_encoded_dependency(pasuk_id, constituency)
     return parse_pasuk_dicta_dependency(pasuk)
-
-def main():
-    constituency = load_torah_dependency()
-    pasuk = get_pasuk_encoded_dependency("Tanakh.Torah.Genesis.1.1", constituency)
-    parsed = parse_pasuk_dicta_dependency(pasuk)
-    print(parsed)
-
-
-if __name__ == "__main__":
-    main()

@@ -4,11 +4,10 @@ from ExternalData.dependency_parser import get_pasuk_parsed
 
 class DependencyTreeNode:
 
-    def __init__(self, index: int, val: str, children, parent, dependency):
+    def __init__(self, index: int, val: str, children, dependency):
         self.index = index
         self.val = val
         self.children = children
-        self.parent = parent
         self.dependency = dependency
 
     def serialize(self):
@@ -29,7 +28,7 @@ class DependencyTreeNode:
     def deserialize(data):
         if not data:
             return None
-        node = DependencyTreeNode(data["index"], data["val"], [], None, data["dependency"])
+        node = DependencyTreeNode(data["index"], data["val"], [], data["dependency"])
         node.children = [DependencyTreeNode.deserialize(child) for child in data["children"]]
         return node
 
@@ -42,7 +41,6 @@ def build(dictaParsedPasuk) -> DependencyTreeNode:
             index=idx,
             val=token['token'],
             children=[],
-            parent=None,
             dependency=None
         )
 
@@ -50,7 +48,6 @@ def build(dictaParsedPasuk) -> DependencyTreeNode:
         parent = token['syntax']['dep_head_idx']
         dependency = token['syntax']['dep_func']
         if parent != -1:
-            nodes[idx].parent = parent
             nodes[parent].children.append(nodes[idx])
             nodes[idx].dependency = dependency
 
