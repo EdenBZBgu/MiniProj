@@ -54,15 +54,12 @@ def build(word_list : []) -> ConstituencyTreeNode:
     for word in word_list:
         id = word["phrase_id"]
         dict.setdefault(id, []).append(word)
-        # if id in dict:
-        #     dict[id] = dict[id].append(word)
-        # else:
-        #     dict[id] = [word]
 
     for id in dict:
         root.children.append(inner_build(dict[id],id))
 
     return root
+
 
 def inner_build(word_list : [], phrase_id: str):
     phrase = " ".join([word["word"] for word in word_list])
@@ -89,13 +86,12 @@ class ConstituencyTree(BaseTree):
         for child in node.children:
             self.__print_tree(child, level + 1)
 
-    def __init__(self, pasuk_id, book_id):
+    def __init__(self, pasuk_id):
         self.root = None
-        self.book_id = book_id
         self.pasuk_id = pasuk_id
 
     def build_tree(self):
-        self.root = build(get_pasuk_parsed(self.book_id, self.pasuk_id))
+        self.root = build(get_pasuk_parsed(self.pasuk_id))
 
     def height(self):
        return self.__height(self.root)
