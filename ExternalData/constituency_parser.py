@@ -57,4 +57,5 @@ def parse_pasuk_constituency(pasuk):
 
 def get_pasuk_parsed(book_num: int, pasuk_id: str):
     constituency = load_torah_constituency()
+    pasuk_id = "Tanakh.Torah." + pasuk_id
     return parse_pasuk_constituency(constituency[books[book_num - 1]][pasuk_id]) if pasuk_id in constituency[books[book_num - 1]] else None

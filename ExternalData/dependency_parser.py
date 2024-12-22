@@ -25,6 +25,7 @@ def load_torah_dependency():
 
 
 def get_pasuk_encoded_dependency(pasuk_id: str, constituency):
+    pasuk_id = "Tanakh.Torah." + pasuk_id
     for book_dict in constituency.values():
         if pasuk_id in book_dict:
             pasuk = book_dict[pasuk_id]

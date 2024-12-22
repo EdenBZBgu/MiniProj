@@ -12,6 +12,8 @@ class Pasuk:
         self.teamim_tree: TeamimTree = None
         self.constituency_tree: ConstituencyTree = None
         self.dependency_tree: DependencyTree = None
+        self.book = pasuk_id.split(".")[0]
+
 
     def build_teamim_tree(self):
         self.teamim_tree = TeamimTree(self._pasuk_id)

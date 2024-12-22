@@ -1,7 +1,7 @@
 import pandas as pd
 from cachetools import cached, TTLCache
 
-BOOK_CODES = {"gn": "1", "ex": "2", "lv": "3", "nu": "4", "dt": "5"}
+BOOK_CODES = {"gn": "Genesis", "ex": "Exodus", "lv": "Leviticus", "nu": "Numbers", "Deuteronomy": "5"}
 
 
 def get_pasuk_encoded_teamim(pasuk_id: str):
@@ -11,9 +11,9 @@ def get_pasuk_encoded_teamim(pasuk_id: str):
 
 def parse_pasuk_id(pid):
     pid = pid.strip()
-    book = BOOK_CODES.get(pid[:2])
-    chapter, pasuk = pid[2:].split(":")
-    return f"{book}_{chapter}_{pasuk}"
+    book = BOOK_CODES.get(pid[:2])  # Get the book name from the first two characters
+    chapter, pasuk = pid[2:].split(":")  # Split the remaining part into chapter and pasuk
+    return f"{book}.{chapter}.{pasuk}"  # Format as book.chapter.pasuk
 
 
 @cached(cache=TTLCache(maxsize=1, ttl=600))
