@@ -63,12 +63,14 @@ def build(dictaParsedPasuk) -> DependencyTreeNode:
 
 class DependencyTree(BaseTree):
 
-    def __init__(self, pasuk_id):
+    def __init__(self, pasuk_id, automodel, tokenizer):
         self.root = None
         self.pasuk_id = pasuk_id
+        self.model = automodel
+        self.tokenizer = tokenizer
 
     def build_tree(self):
-        self.root = build(get_pasuk_parsed(self.pasuk_id))
+        self.root = build(get_pasuk_parsed(self.pasuk_id, self.model, self.tokenizer))
 
     def height(self):
 

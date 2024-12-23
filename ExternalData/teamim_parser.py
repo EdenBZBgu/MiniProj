@@ -1,3 +1,5 @@
+from datetime import timedelta
+
 import pandas as pd
 from cachetools import cached, TTLCache
 
@@ -16,7 +18,7 @@ def parse_pasuk_id(pid):
     return f"Tanakh.Torah.{book}.{chapter}.{pasuk}"
 
 
-@cached(cache=TTLCache(maxsize=1, ttl=600))
+@cached(cache=TTLCache(maxsize=1, ttl=timedelta(hours=1).total_seconds()))
 def load_torah_teamim():
     df = pd.read_excel(
         "ExternalData/Teamim.xlsx",
