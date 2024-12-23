@@ -3,8 +3,13 @@ import pandas as pd
 from typing import List
 
 from tqdm import tqdm
+from transformers import AutoModel, AutoTokenizer
 
 from Classes.Pasuk import Pasuk
+
+AUTOMODEL = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True)
+AUTOMODEL.eval()
+TOKENIZER = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint')
 
 
 class Book:
@@ -48,7 +53,7 @@ class Torah:
             for pasuk in tqdm(book.psukim):
                 pasuk.build_teamim_tree()
                 pasuk.build_constituency_tree()
-                pasuk.build_dependency_tree()
+                pasuk.build_dependency_tree(AUTOMODEL, TOKENIZER)
 
     def save(self, filename: str):
         with open(filename, "w") as f:
