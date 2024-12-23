@@ -1,11 +1,14 @@
 import re
 import xml.etree.ElementTree as ET
-from transformers import AutoModel, AutoTokenizer
+from datetime import timedelta
+from cachetools import TTLCache, cached
 import torch
 
 namespaces = {'tei': 'http://www.tei-c.org/ns/1.0'}
 books = ["Genesis.xml", "Exodus.xml", "Leviticus.xml", "Numbers.xml", "Deuteronomy.xml"]
 
+
+@cached(cache=TTLCache(maxsize=1, ttl=timedelta(hours=1).total_seconds()))
 def process_book(file_path):
     book_dict = {}
     xml_tree = ET.parse("ExternalData/" + file_path)
@@ -19,6 +22,7 @@ def process_book(file_path):
     return book_dict
 
 
+@cached(cache=TTLCache(maxsize=1, ttl=timedelta(hours=1).total_seconds()))
 def load_torah_dependency():
     torah_books_dict = {book: process_book(book) for book in books}
     return torah_books_dict
@@ -37,12 +41,7 @@ def get_pasuk_encoded_dependency(pasuk_id: str, constituency):
             return sentence.strip()
 
 
-def parse_pasuk_dicta_dependency(
-    pasuk,
-    tokenizer = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint'),
-    model = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True)
-):
-    model.eval()
+def parse_pasuk_dicta_dependency(pasuk, model, tokenizer):
     result = model.predict([pasuk], tokenizer, output_style='json')
 
     if isinstance(result, list) and len(result) > 0:
@@ -51,7 +50,8 @@ def parse_pasuk_dicta_dependency(
     raise ValueError("Unexpected format for the parsed output.")
 
 
-def get_pasuk_parsed(pasuk_id: str):
+def get_pasuk_parsed(pasuk_id: str, model, tokenizer):
     constituency = load_torah_dependency()
     pasuk = get_pasuk_encoded_dependency(pasuk_id, constituency)
-    return parse_pasuk_dicta_dependency(pasuk)
+    return parse_pasuk_dicta_dependency(pasuk, model, tokenizer)
+

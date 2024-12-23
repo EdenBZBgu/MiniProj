@@ -22,8 +22,8 @@ class Pasuk:
         self.constituency_tree = ConstituencyTree(self._pasuk_id)
         self.constituency_tree.build_tree()
 
-    def build_dependency_tree(self):
-        self.dependency_tree = DependencyTree(self._pasuk_id)
+    def build_dependency_tree(self, automodel, tokenizer):
+        self.dependency_tree = DependencyTree(self._pasuk_id, automodel, tokenizer)
         self.dependency_tree.build_tree()
 
     def text(self):
