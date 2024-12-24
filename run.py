@@ -5,7 +5,10 @@ def main():
     t = Torah()
     t.read("ExternalData/torah.xlsx")
     t.parse_trees()
-    # t.save("torah_dmp.pkl")
+    t.save()
+
+    t2 = Torah()
+    t2.load()
 
 
 if __name__ == "__main__":

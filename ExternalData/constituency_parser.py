@@ -7,12 +7,12 @@ namespaces = {'tei': 'http://www.tei-c.org/ns/1.0',
               'xml': '{http://www.w3.org/XML/1998/namespace}'}
 features = []
 
-books = ["Genesis.xml", "Exodus.xml", "Leviticus.xml", "Numbers.xml", "Deuteronomy.xml"]
+books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"]
 
 
 def get_all_sentences_from_book(book_path):
     book_dict = {}
-    xml_tree = ET.parse("ExternalData/" + book_path)
+    xml_tree = ET.parse("ExternalData/" + book_path + ".xml")
     root = xml_tree.getroot()
     sentences = root.findall('.//tei:s', namespaces=namespaces)
 
