@@ -51,7 +51,7 @@ def parse_pasuk_dicta_dependency(pasuk, model, tokenizer):
 
 
 def get_pasuk_parsed(pasuk_id: str, model, tokenizer):
-    constituency = load_torah_dependency()
-    pasuk = get_pasuk_encoded_dependency(pasuk_id, constituency)
+    dependency = load_torah_dependency()
+    pasuk = get_pasuk_encoded_dependency(pasuk_id, dependency)
     return parse_pasuk_dicta_dependency(pasuk, model, tokenizer)
 

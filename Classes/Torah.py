@@ -26,26 +26,26 @@ class Book:
             "psukim": [pasuk.serialize() for pasuk in self.psukim]
         }
 
-    def deserialize(self, data):
+    def deserialize(data):
         if not data:
            return None
         book = Book(data["book_name"], data["book_number"])
         book.psukim = [Pasuk.deserialize(pasuk) for pasuk in data["psukim"]]
         return book
 
-
 class Torah:
     def __init__(self):
         self.books: List[Book] = []
 
     def read(self, filename: str):
+        print(f"\nReading {filename}\n")
         tanach_raw = pd.read_excel(filename)
         for _, row in tanach_raw.iterrows():
             book_name, book_number, teuda_number, chapter, pasuk_number, pasuk_text = row
             if book_number > len(self.books):
                 self.books.append(Book(book_name, book_number))
 
-            pasuk = Pasuk(f"Tanakh.Torah.{book_name}.{chapter}.{pasuk_number}", pasuk_text)
+            pasuk = Pasuk(f"Tanakh.Torah.{book_name}.{chapter}.{pasuk_number}", pasuk_text, book_name)
             self.books[book_number - 1].psukim.append(pasuk)
 
     def parse_trees(self):
