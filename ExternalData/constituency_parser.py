@@ -58,6 +58,6 @@ def parse_pasuk_constituency(pasuk):
 
 def get_pasuk_parsed(pasuk_id: str):
     constituency = load_torah_constituency()
-    book_name = pasuk_id.split(".")[2] + ".xml"
+    book_name = pasuk_id.split(".")[2]
     book_num = books.index(book_name)
     return parse_pasuk_constituency(constituency[books[book_num]][pasuk_id]) if pasuk_id in constituency[books[book_num]] else None
