@@ -1,10 +1,11 @@
 from Classes.ConstituencyTree import ConstituencyTree
 from Classes.DependencyTree import DependencyTree
 from Classes.TeamimTree import TeamimTree
+from ExternalData.teuda_parser import get_pasuk_teuda
 
 
 class Pasuk:
-    def __init__(self, pasuk_id="", text=""):
+    def __init__(self, pasuk_id="", text="", book=""):
         self.text: str = text
         self._pasuk_id: str = pasuk_id
         self._words: list[str] = text.split(" ")
@@ -12,7 +13,8 @@ class Pasuk:
         self.teamim_tree: TeamimTree = None
         self.constituency_tree: ConstituencyTree = None
         self.dependency_tree: DependencyTree = None
-        self.book = pasuk_id.split(".")[2]
+        self.book = book
+        self.teuda = get_pasuk_teuda(pasuk_id)
 
     def build_teamim_tree(self):
         self.teamim_tree = TeamimTree(self._pasuk_id)
@@ -38,6 +40,12 @@ class Pasuk:
     def word_count(self):
         return self._word_count
 
+    def print_pasuk(self):
+        print("text: " + self.text)
+        print("id: " + self._pasuk_id)
+        print("teuda: " + self.teuda)
+
+
     def serialize(self):
         return {
             "text": self.text,
@@ -47,6 +55,8 @@ class Pasuk:
             "teamim_tree": self.teamim_tree.serialize() if self.teamim_tree else None,
             "constituency_tree": self.constituency_tree.serialize() if self.constituency_tree else None,
             "dependency_tree": self.dependency_tree.serialize() if self.dependency_tree else None,
+            "book": self.book,
+            "teuda": self.teuda if self.teuda else None
         }
 
     @staticmethod
@@ -61,4 +71,6 @@ class Pasuk:
         pasuk.teamim_tree = TeamimTree.deserialize(data["teamim_tree"])
         pasuk.constituency_tree = ConstituencyTree.deserialize(data["constituency_tree"])
         pasuk.dependency_tree = DependencyTree.deserialize(data["dependency_tree"])
+        pasuk.book = data["book"]
+        pasuk.teuda = data["teuda"]
         return pasuk

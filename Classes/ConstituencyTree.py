@@ -39,7 +39,10 @@ class ConstituencyTreeNode:
         if not data:
             return None
         node = ConstituencyTreeNode(data["phrase_id"], data["val"], data["function"], data["feature_or_phrase_type"], data["word_root"])
-        node.children = [ConstituencyTreeNode.deserialize(child) for child in data["children"]]
+        if "children" in data:
+            node.children = [ConstituencyTreeNode.deserialize(child) for child in data["children"]]
+        else:
+            node.children = []
         return node
 
 
@@ -113,12 +116,16 @@ class ConstituencyTree(BaseTree):
         return 1 + sum(children_sizes)
 
     def serialize(self):
-        if not self.root:
-            return None
-        return self.root.serialize()
+        return {
+            "pasuk_id": self.pasuk_id,
+            "root": self.root.serialize() if self.root else None
+        }
 
     @staticmethod
     def deserialize(data):
-        root = ConstituencyTreeNode.deserialize(data)
-        return root
+        pasuk_id = data["pasuk_id"]
+        tree = ConstituencyTree(pasuk_id)
+        tree.root = ConstituencyTreeNode.deserialize(data["root"])
+        return tree
+
 

@@ -1,5 +1,6 @@
 import re
 import xml.etree.ElementTree as ET
+from datetime import timedelta
 
 from cachetools import cached, TTLCache
 
@@ -23,7 +24,7 @@ def get_all_sentences_from_book(book_path):
     return book_dict
 
 
-@cached(cache=TTLCache(maxsize=1, ttl=200))
+@cached(cache=TTLCache(maxsize=1, ttl=timedelta(hours=1).total_seconds()))
 def load_torah_constituency():
     torah_books_dict = {book: get_all_sentences_from_book(book) for book in books}
     return torah_books_dict
@@ -57,5 +58,6 @@ def parse_pasuk_constituency(pasuk):
 
 def get_pasuk_parsed(pasuk_id: str):
     constituency = load_torah_constituency()
-    book_num = books.index(pasuk_id.split(".")[2])
+    book_name = pasuk_id.split(".")[2] + ".xml"
+    book_num = books.index(book_name)
     return parse_pasuk_constituency(constituency[books[book_num]][pasuk_id]) if pasuk_id in constituency[books[book_num]] else None
