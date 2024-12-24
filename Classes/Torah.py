@@ -1,3 +1,4 @@
+import os
 import pickle
 import pandas as pd
 from typing import List
@@ -55,11 +56,10 @@ class Torah:
                 pasuk.build_constituency_tree()
                 pasuk.build_dependency_tree(AUTOMODEL, TOKENIZER)
 
-    def save(self, filename: str):
-        with open(filename, "w") as f:
-            pickle.dump([book.serialize() for book in self.books], f)
+    def save(self, filename: str = "torah.pkl"):
+        with open(filename, "wb") as f:
+            pickle.dump(self.books, f)
 
-    def load(self, filename: str):
-        with open(filename, "r") as f:
+    def load(self, filename: str = "torah.pkl"):
+        with open(filename, "rb") as f:
             self.books = pickle.load(f)
-
