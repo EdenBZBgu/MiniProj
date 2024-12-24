@@ -1,5 +1,6 @@
 from ExternalData.teamim_parser import get_pasuk_encoded_teamim
 from Classes.BaseTree import BaseTree
+from typing import List
 
 Emperors = {
     #     "00": "Siluk",
@@ -26,7 +27,7 @@ Hierarchy = [Emperors, Kings, Dukes, Counts]
 
 
 class TeaminTreeNode:
-    def __init__(self, symbols: list[str], text=""):
+    def __init__(self, symbols: List[str], text=""):
         self.symbols = symbols
         self.text = text
         self.left = None
@@ -84,8 +85,8 @@ class TeaminTreeNode:
         if not data:
             return None
         node = TeaminTreeNode(data["symbols"])
-        node.left = TeaminTreeNode.deserialize(data["left"])
-        node.right = TeaminTreeNode.deserialize(data["right"])
+        node.left = TeaminTreeNode.deserialize(data.get("left"))
+        node.right = TeaminTreeNode.deserialize(data.get("right"))
         return node
 
 
