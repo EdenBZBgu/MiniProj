@@ -1,5 +1,6 @@
 import re
 import xml.etree.ElementTree as ET
+from datetime import timedelta
 
 from cachetools import cached, TTLCache
 
@@ -7,12 +8,12 @@ namespaces = {'tei': 'http://www.tei-c.org/ns/1.0',
               'xml': '{http://www.w3.org/XML/1998/namespace}'}
 features = []
 
-books = ["Genesis.xml", "Exodus.xml", "Leviticus.xml", "Numbers.xml", "Deuteronomy.xml"]
+books = ["Genesis", "Exodus", "Leviticus", "Numbers", "Deuteronomy"]
 
 
 def get_all_sentences_from_book(book_path):
     book_dict = {}
-    xml_tree = ET.parse("ExternalData/" + book_path)
+    xml_tree = ET.parse("ExternalData/" + book_path + ".xml")
     root = xml_tree.getroot()
     sentences = root.findall('.//tei:s', namespaces=namespaces)
 
@@ -23,7 +24,7 @@ def get_all_sentences_from_book(book_path):
     return book_dict
 
 
-@cached(cache=TTLCache(maxsize=1, ttl=200))
+@cached(cache=TTLCache(maxsize=1, ttl=timedelta(hours=1).total_seconds()))
 def load_torah_constituency():
     torah_books_dict = {book: get_all_sentences_from_book(book) for book in books}
     return torah_books_dict
@@ -55,6 +56,8 @@ def parse_pasuk_constituency(pasuk):
 
     return words
 
-def get_pasuk_parsed(book_num: int, pasuk_id: str):
+def get_pasuk_parsed(pasuk_id: str):
     constituency = load_torah_constituency()
-    return parse_pasuk_constituency(constituency[books[book_num - 1]][pasuk_id]) if pasuk_id in constituency[books[book_num - 1]] else None
+    book_name = pasuk_id.split(".")[2]
+    book_num = books.index(book_name)
+    return parse_pasuk_constituency(constituency[books[book_num]][pasuk_id]) if pasuk_id in constituency[books[book_num]] else None
