@@ -122,3 +122,4 @@ class ConstituencyTree(BaseTree):
         root = ConstituencyTreeNode.deserialize(data)
         return root
 
+
