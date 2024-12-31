@@ -92,9 +92,12 @@ class ConstituencyTree(BaseTree):
     def __init__(self, pasuk_id):
         self.root = None
         self.pasuk_id = pasuk_id
+        self.psukiot = None
 
     def build_tree(self):
-        self.root = build(get_pasuk_parsed(self.pasuk_id))
+        words, psukiot = get_pasuk_parsed(self.pasuk_id)
+        self.root = build(words)
+        self.psukiot = psukiot
 
     def height(self):
        return self.__height(self.root)

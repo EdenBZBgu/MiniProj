@@ -32,6 +32,7 @@ def load_torah_constituency():
 
 def parse_pasuk_constituency(pasuk):
     words = []
+    psukiot = {}
     phrases = pasuk.findall(".//tei:phrase", namespaces=namespaces)
     phrase_type_map = {
         phrase.attrib.get("id"): (phrase.attrib.get("type"), phrase.attrib.get("function"))
@@ -54,7 +55,16 @@ def parse_pasuk_constituency(pasuk):
 
         words.append(word_data)
 
-    return words
+        key = (phrase_id, word_data["phrase_type"])
+        if psukiot.get(key) is not None:
+            data = psukiot[key]
+            data = data + " " + word_data["word"]
+            psukiot[key] = data
+
+        else:
+            psukiot[key] = word_data["word"]
+
+    return words, psukiot
 
 def get_pasuk_parsed(pasuk_id: str):
     constituency = load_torah_constituency()
