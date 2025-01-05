@@ -1,7 +1,13 @@
+from transformers import AutoModel, AutoTokenizer
+
+from Classes.Pasuk import Pasuk
 from Classes.Torah import Torah
+from ExternalData.dependency_parser import get_pasuk_encoded_dependency, load_torah_dependency
 from ExternalData.statistics import calculate_word_frequencies_by_book, calculate_word_frequencies_by_teuda, \
     calculate_phraseText_frequencies_byBook, calculate_pasuk_lengths_by_book, calculate_unique_word_counts_by_book, \
     calculate_tree_depths
+import pandas as pd
+from ExternalData.model import Classifier, LogisticRegressionClassifier, SVMClassifier
 
 
 def main():
@@ -12,10 +18,11 @@ def main():
     # t.save()
 
     t2 = Torah()
-    t2.load()
+    # t2.load()
 
-    word_counter = calculate_tree_depths(t2)
-    print(word_counter)
+    Classifier = SVMClassifier(t2)
+    Classifier.train()
+    Classifier.test()
 
 
 

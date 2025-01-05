@@ -136,19 +136,26 @@ class DependencyTree(BaseTree):
 
     def height(self):
 
-        def _calculate_height(node):
+        def _calculate_height(node, visited=set()):
+            if node in visited:
+                return 0
+            visited.add(node)
             if not node.children:
                 return 1
-            return 1 + max(_calculate_height(child) for child in node.children)
+            return 1 + max(_calculate_height(child, visited) for child in node.children)
 
         return _calculate_height(self.root) if self.root else 0
 
+
     def size(self):
 
-        def _calculate_size(node):
+        def _calculate_size(node, visited=set()):
+            if node in visited:
+                return 0
+            visited.add(node)
             if not node.children:
                 return 1
-            return 1 + sum(_calculate_size(child) for child in node.children)
+            return 1 + sum(_calculate_size(child, visited) for child in node.children)
 
         return _calculate_size(self.root) if self.root else 0
 
@@ -170,11 +177,11 @@ class DependencyTree(BaseTree):
             if visited is None:
                 visited = set()  # Initialize the set on the first call
             if node in visited:
+                print("    " * level + f"{node.val} (index: {node.index}, dep: {node.dependency}")
                 return  # Skip already visited nodes to avoid cycles
 
             visited.add(node)  # Mark the current node as visited
-            print(
-                "    " * level + f"{node.val} (index: {node.index}, dep: {node.dependency if node.dependency else 'None'})")
+            print("    " * level + f"{node.val} (index: {node.index}, dep: {node.dependency if node.dependency else 'None'})")
 
             for child in node.children:
                 _print_subtree(child, level + 1, visited)

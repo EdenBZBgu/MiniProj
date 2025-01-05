@@ -28,8 +28,8 @@ def load_torah_dependency():
     return torah_books_dict
 
 
-def get_pasuk_encoded_dependency(pasuk_id: str, constituency):
-    for book_dict in constituency.values():
+def get_pasuk_encoded_dependency(pasuk_id: str, dependency):
+    for book_dict in dependency.values():
         if pasuk_id in book_dict:
             pasuk = book_dict[pasuk_id]
             w_tags = pasuk.findall(".//tei:w", namespaces=namespaces)

@@ -8,9 +8,9 @@ from transformers import AutoModel, AutoTokenizer
 
 from Classes.Pasuk import Pasuk
 
-AUTOMODEL = AutoModel.from_pretrained('dicta-il/dictabert-tiny-joint', trust_remote_code=True)
+AUTOMODEL = AutoModel.from_pretrained('dicta-il/dictabert-joint', trust_remote_code=True)
 AUTOMODEL.eval()
-TOKENIZER = AutoTokenizer.from_pretrained('dicta-il/dictabert-tiny-joint')
+TOKENIZER = AutoTokenizer.from_pretrained('dicta-il/dictabert-joint')
 
 
 class Book:
@@ -56,12 +56,13 @@ class Torah:
             chapter = row["Chapter"]
             pasuk_number = row["Pasuk"]
             pasuk_text = row["Text"]
+            pasuk_sentence = row["sentence"]
             pasuk_id = row["Pasuk ID"]
 
             if book_number > len(self.books):
                 self.books.append(Book(book_name, book_number))
 
-            pasuk = Pasuk(pasuk_id, pasuk_text, book_name)
+            pasuk = Pasuk(pasuk_id, pasuk_sentence, book_name)
             self.books[book_number - 1].psukim.append(pasuk)
 
             teuda_obj = next((teuda for teuda in self.teudot if teuda.teuda_name == teuda_name), None)
