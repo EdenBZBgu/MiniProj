@@ -27,3 +27,8 @@ class BaseTree(ABC):
     def deserialize(data):
         """Returns a tree object from a string representation"""
         raise NotImplementedError
+
+    @abstractmethod
+    def to_vector(self):
+        """Returns a vector representation of the tree"""
+        raise NotImplementedError

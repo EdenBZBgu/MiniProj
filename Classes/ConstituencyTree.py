@@ -45,6 +45,11 @@ class ConstituencyTreeNode:
             node.children = []
         return node
 
+    def to_vector(self):
+        if self.is_leaf():
+            return f'()'
+        return f'({"".join([child.to_vector() for child in self.children])})'
+
 
 def build(word_list : []) -> ConstituencyTreeNode:
     if not word_list:
@@ -93,11 +98,16 @@ class ConstituencyTree(BaseTree):
         self.root = None
         self.pasuk_id = pasuk_id
         self.psukiot = None
+        self.roots = None
+        self.characteristic = None
 
     def build_tree(self):
-        words, psukiot = get_pasuk_parsed(self.pasuk_id)
+        words, psukiot, roots, characteristic = get_pasuk_parsed(self.pasuk_id)
         self.root = build(words)
         self.psukiot = psukiot
+        self.roots = roots
+        self.characteristic = characteristic
+
 
     def height(self):
        return self.__height(self.root)
@@ -130,5 +140,8 @@ class ConstituencyTree(BaseTree):
         tree = ConstituencyTree(pasuk_id)
         tree.root = ConstituencyTreeNode.deserialize(data["root"])
         return tree
+
+    def to_vector(self):
+        return self.root.to_vector() if self.root else None
 
 

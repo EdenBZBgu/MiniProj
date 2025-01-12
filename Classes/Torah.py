@@ -19,6 +19,12 @@ class Book:
         self.book_number: int = book_number
         self.psukim: List[Pasuk] = []
 
+    def get(self, chapter, number):
+        return next(
+            (pasuk for pasuk in self.psukim
+             if pasuk._pasuk_id == f"Tanakh.Torah.{self.book_name}.{chapter}.{number}")
+        )
+
     def serialize(self) -> dict:
         return {
             "book_name": self.book_name,
@@ -43,6 +49,9 @@ class Torah:
     def __init__(self):
         self.books: List[Book] = []
         self.teudot: List[Teuda] = []
+
+    def get(self, book_number, chapter, number):
+        return self.books[book_number - 1].get(chapter, number)
 
     def read(self, filename: str):
         print(f"Reading {filename}\n")

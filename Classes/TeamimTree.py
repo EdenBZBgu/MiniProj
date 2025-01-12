@@ -89,6 +89,11 @@ class TeaminTreeNode:
         node.right = TeaminTreeNode.deserialize(data.get("right"))
         return node
 
+    def to_vector(self):
+        if not self.left and not self.right:
+            return '()'
+        return f'({self.left.to_vector()}{self.right.to_vector()})'
+
 
 class TeamimTree(BaseTree):
     def __init__(self, pasuk_id, text=""):
@@ -138,3 +143,6 @@ class TeamimTree(BaseTree):
     def deserialize(data):
         root = TeaminTreeNode.deserialize(data)
         return root
+
+    def to_vector(self):
+        return self.root.to_vector()

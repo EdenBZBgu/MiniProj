@@ -204,5 +204,8 @@ class DependencyTree(BaseTree):
         tree.root = DependencyTreeNode.deserialize(data["root"])
         return tree
 
+    def to_vector(self):
+        pass
+
 
 
