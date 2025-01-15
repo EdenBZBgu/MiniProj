@@ -99,7 +99,7 @@ def calculate_pasuk_lengths_by_book(tora: Torah):
         # Store the DataFrame in the dictionary using the book name as the key
         book_pasuk_lengths[book.book_name] = pasuk_df
 
-        # Calculate statistics for the current book
+        # Calculate Statistics for the current book
 
         min_length = pasuk_df["Pasuk Length"].min()
         max_length = pasuk_df["Pasuk Length"].max()
