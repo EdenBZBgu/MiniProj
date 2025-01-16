@@ -144,4 +144,39 @@ class ConstituencyTree(BaseTree):
     def to_vector(self):
         return self.root.to_vector() if self.root else None
 
+    def average_children(self, node):
+        if not node.children:
+            return 0
+        num_children = len(node.children)
+        child_factors = [self.__average_branching_factor(child) for child in node.children]
+        return (num_children + sum(child_factors)) / (1 if not node.is_leaf() else len(node.children))
 
+    def average_children(self):
+        total_children, total_nodes = self.__average_children(self.root)
+        return total_children / total_nodes if total_nodes > 0 else 0
+
+    def __average_children(self, node):
+        if not node.children:
+            return 0, 0  # No children and not an internal node
+
+        num_children = len(node.children)
+        total_children = num_children
+        total_nodes = 1  # Current node is counted as a node with children
+
+        for child in node.children:
+            child_children, child_nodes = self.__average_children(child)
+            total_children += child_children
+            total_nodes += child_nodes
+
+        return total_children, total_nodes
+
+    def max_children(self):
+        return self.__max_children(self.root)
+
+    def __max_children(self, node):
+        if not node:
+            return 0
+
+        num_children = len(node.children)
+        max_children_descendants = max((self.__max_children(child) for child in node.children), default=0)
+        return max(num_children, max_children_descendants)

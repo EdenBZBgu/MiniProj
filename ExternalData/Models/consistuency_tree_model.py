@@ -3,7 +3,7 @@ from sklearn.linear_model import LogisticRegression, RidgeClassifier, SGDClassif
 from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
-from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
 from sklearn.model_selection import train_test_split, cross_val_score, KFold
 from sklearn.feature_extraction.text import CountVectorizer
 from abc import ABC, abstractmethod
@@ -45,12 +45,11 @@ class ConstituencyTreeClassifier(ABC):
 
         self.model = None
         self.model_name = None
+        self.isBook = isBook
 
     def extract_tree_features(self, constituency_tree):
-        features = []
-        features.append(constituency_tree.to_vector())
-        features.append(str(constituency_tree.height()))
-        features.append(str(constituency_tree.size()))
+        features = [constituency_tree.to_vector(), str(constituency_tree.height()), str(constituency_tree.size()),
+                    str(constituency_tree.average_children()), str(constituency_tree.max_children())]
         return features
 
     @abstractmethod
@@ -81,6 +80,14 @@ class ConstituencyTreeClassifier(ABC):
         print(f"{self.model_name} Precision: {precision:.4f}")
         print(f"{self.model_name} Recall: {recall:.4f}")
         print(f"{self.model_name} F1 Score: {f1:.4f}")
+
+        if self.isBook:
+            report = classification_report(self.y_test, y_pred,
+                                           target_names=[f"Book {book.book_name}" for book in self.torah.books])
+        else:
+            report = classification_report(self.y_test, y_pred,
+                                           target_names=[f"Teuda {teuda.teuda_name}" for teuda in self.torah.teudot])
+        print(report)
 
     def cross_validate(self, cv_folds=10):
         if self.model is None:
