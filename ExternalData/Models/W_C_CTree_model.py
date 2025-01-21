@@ -4,35 +4,37 @@ from sklearn.svm import SVC
 from sklearn.neighbors import KNeighborsClassifier
 from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score, classification_report
-from sklearn.model_selection import train_test_split, cross_val_score, KFold
+from sklearn.model_selection import train_test_split, KFold, cross_val_score
 from sklearn.feature_extraction.text import CountVectorizer
 from abc import ABC, abstractmethod
 import numpy as np
 
 
 # Base Classifier
-class TeamimTreeClassifier(ABC):
+class WCharacteristicAndTreeClassifier(ABC):
     def __init__(self, torah : Torah, pickle_file = "torah.pkl", test_size = 0.2, random_state = 42, isBook = True):
         self.torah = torah
         torah.load(pickle_file)
         self.books = torah.books
 
         texts, labels = [], []
-        if (isBook):
+        if(isBook):
             for book in self.books:
                 for pasuk in book.psukim:
-                    tree = pasuk.teamim_tree
-                    teamim = self.extract_tree_features(tree)
-                    featuresStr = " ".join(teamim)
-                    texts.append(featuresStr)
+                    characteristic = " ".join([f"{key}:{value}" for key, value in pasuk.constituency_tree.characteristic.items()])
+                    tree = pasuk.constituency_tree
+                    features = self.extract_tree_features(tree)
+                    featuresStr = " ".join(features)
+                    texts.append(characteristic + " " + featuresStr)
                     labels.append(book.book_number)
         else:
             for teuda in torah.teudot:
                 for pasuk in teuda.psukim:
-                    tree = pasuk.teamim_tree
-                    teamim = self.extract_tree_features(tree)
-                    featuresStr = " ".join(teamim)
-                    texts.append(featuresStr)
+                    characteristic = " ".join([f"{key}:{value}" for key, value in pasuk.constituency_tree.characteristic.items()])
+                    tree = pasuk.constituency_tree
+                    features = self.extract_tree_features(tree)
+                    featuresStr = " ".join(features)
+                    texts.append(characteristic + " " + featuresStr)
                     labels.append(teuda.teuda_name)
 
         cv = CountVectorizer()
@@ -47,15 +49,16 @@ class TeamimTreeClassifier(ABC):
         self.model_name = None
         self.isBook = isBook
 
-    def extract_tree_features(self, teamim_tree):
-        features = [teamim_tree.to_vector(), str(teamim_tree.height()), str(teamim_tree.size())]
+
+    def extract_tree_features(self, constituency_tree):
+        features = [constituency_tree.to_vector(), str(constituency_tree.height()), str(constituency_tree.size()),
+                    str(constituency_tree.average_children()), str(constituency_tree.max_children())]
         return features
 
     @abstractmethod
     def initialize_model(self):
         """Initialize the specific model. To be implemented by subclasses."""
         pass
-
 
     def train(self):
         if self.model is None:
@@ -86,6 +89,7 @@ class TeamimTreeClassifier(ABC):
         else:
             report = classification_report(self.y_test, y_pred,
                                            target_names=[f"Teuda {teuda.teuda_name}" for teuda in self.torah.teudot])
+
         print(report)
 
     def cross_validate(self, cv_folds=10):
@@ -96,28 +100,29 @@ class TeamimTreeClassifier(ABC):
         cross_val_scores = cross_val_score(self.model, self.X_train, self.y_train, cv=kf, scoring='accuracy')
         print(f"{self.model_name} Average cross-validation score: {np.mean(cross_val_scores):.4f}")
 
+
 # Subclasses for Specific Models
-class TeamimTreeLogisticRegressionClassifier(TeamimTreeClassifier):
+class WCharacteristicTreeLogisticRegressionClassifier(WCharacteristicAndTreeClassifier):
     def initialize_model(self):
-        self.model = LogisticRegression(max_iter = 500)
+        self.model = LogisticRegression(max_iter = 1000)
         self.model_name = "Logistic Regression"
 
 
-class TeamimTreeRidgeClassifierModel(TeamimTreeClassifier):
+class WCharacteristicTreeRidgeClassifierModel(WCharacteristicAndTreeClassifier):
     def initialize_model(self):
         self.model = RidgeClassifier()
         self.model_name = "Ridge Classifier"
 
 
-class TeamimTreeSVMClassifier(TeamimTreeClassifier):
+class WCharacteristicTreeSVMClassifier(WCharacteristicAndTreeClassifier):
     def initialize_model(self):
         self.model = SVC(kernel = "linear")
         self.model_name = "SVM"
 
 
-class TeamimTreeKNNClassifier(TeamimTreeClassifier):
+class WCharacteristicTreeKNNClassifier(WCharacteristicAndTreeClassifier):
     def __init__(self, torah : Torah, pickle_file = "torah.pkl", test_size = 0.2, random_state = 42, isBook = True, n_neighbors = 10):
-        super(TeamimTreeKNNClassifier, self).__init__(torah, pickle_file, test_size, random_state, isBook)
+        super(WCharacteristicTreeKNNClassifier, self).__init__(torah, pickle_file, test_size, random_state, isBook)
         self.n_neighbors = n_neighbors
 
     def initialize_model(self):
@@ -125,13 +130,13 @@ class TeamimTreeKNNClassifier(TeamimTreeClassifier):
         self.model_name = f"K-NN (k={self.n_neighbors})"
 
 
-class TeamimTreeMLPClassifierModel(TeamimTreeClassifier):
+class WCharacteristicTreeMLPClassifierModel(WCharacteristicAndTreeClassifier):
     def initialize_model(self):
         self.model = MLPClassifier(max_iter = 1000)
         self.model_name = "MLP Classifier"
 
 
-class TeamimTreeSGDClassifierModel(TeamimTreeClassifier):
+class WCharacteristicTreeSGDClassifierModel(WCharacteristicAndTreeClassifier):
     def initialize_model(self):
         self.model = SGDClassifier(max_iter = 1000)
         self.model_name = "SGD Classifier"
