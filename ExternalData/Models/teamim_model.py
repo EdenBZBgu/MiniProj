@@ -101,7 +101,7 @@ class TeamimClassifier(ABC):
 
 
 # Subclasses for Specific Models
-class TeamimLogisticRegressionClassifier(TeamimClassifier):
+class ConstituencyTreeLogisticRegressionClassifier(TeamimClassifier):
     def initialize_model(self):
         self.model = LogisticRegression(max_iter = 500)
         self.model_name = "Logistic Regression"
