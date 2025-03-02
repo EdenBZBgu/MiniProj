@@ -23,7 +23,7 @@ def calculate_word_frequencies_by_book(tora: Torah):
 
         # Store the DataFrame in the dictionary using the book name as the key
         book_word_frequencies[book.book_name] = word_df
-
+        word_check = word_df["Frequency"].isna().sum()
     return book_word_frequencies
 
 def calculate_word_frequencies_by_teuda(tora: Torah):
@@ -49,30 +49,6 @@ def calculate_word_frequencies_by_teuda(tora: Torah):
         teuda_word_frequencies[teuda.teuda_name] = word_df
 
     return teuda_word_frequencies
-
-def calculate_phraseText_frequencies_by_Book(tora: Torah):
-
-    book_phraseText_frequencies = {}
-
-    for book in tora.books:
-
-        phrase_counter = Counter()
-
-        # Count words in the current book
-        for pasuk in book.psukim:
-            psukiot = pasuk.constituency_tree.psukiot
-            values = list(psukiot.values())
-            phrase_counter.update(values)
-
-        # Convert the Counter to a Pandas DataFrame
-        phrase_df = pd.DataFrame.from_dict(phrase_counter, orient="index", columns=["Frequency"])
-        phrase_df.index.name = "psukit"
-        phrase_df = phrase_df.sort_values(by="Frequency", ascending=False)
-
-        # Store the DataFrame in the dictionary using the book name as the key
-        book_phraseText_frequencies[book.book_name] = phrase_df
-
-    return book_phraseText_frequencies
 
 def calculate_pasuk_lengths_by_book(tora: Torah):
     """
@@ -212,7 +188,6 @@ def calculate_unique_word_counts_by_teuda(tora: Torah):
 
     return teuda_unique_word_counts
 
-#to check after fixing dependency tree
 def calculate_tree_depths_by_book(tora: Torah):
     """
     Calculate the depth of the three trees (teamim_tree, constituency_tree, dependency_tree)
@@ -256,6 +231,49 @@ def calculate_tree_depths_by_book(tora: Torah):
 
     return book_tree_depths
 
+def calculate_tree_depths_by_teuda(tora: Torah):
+    """
+    Calculate the depth of the three trees (teamim_tree, constituency_tree, dependency_tree)
+    for each pasuk in each teuda.
+
+    :return: A dictionary where keys are teuda names and values are Pandas DataFrames with tree depths.
+    """
+    teuda_tree_depths = {}
+
+    for teuda in tora.teudot:
+        # Create a list to store pasuk data for the current teuda
+        pasuk_data = []
+
+        for pasuk in teuda.psukim:
+            # Initialize tree depths as None (if the tree doesn't exist)
+            teamim_tree_depth = None
+            constituency_tree_depth = None
+            dependency_tree_depth = None
+
+            # Calculate tree depths if the respective tree exists
+            if pasuk.teamim_tree:
+                teamim_tree_depth = pasuk.teamim_tree.height()
+            if pasuk.constituency_tree:
+                constituency_tree_depth = pasuk.constituency_tree.height()
+            if pasuk.dependency_tree:
+                dependency_tree_depth = pasuk.dependency_tree.height()
+
+            # Append data for this pasuk
+            pasuk_data.append({
+                "Pasuk ID": pasuk._pasuk_id,
+                "Teamim Tree Depth": teamim_tree_depth,
+                "Constituency Tree Depth": constituency_tree_depth,
+                "Dependency Tree Depth": dependency_tree_depth,
+            })
+
+        # Convert the list of dictionaries to a Pandas DataFrame
+        pasuk_df = pd.DataFrame(pasuk_data)
+
+        # Store the DataFrame in the dictionary using the teuda name as the key
+        teuda_tree_depths[teuda.teuda_name] = pasuk_df
+
+    return teuda_tree_depths
+
 def calculate_phrases_per_pasuk_constituency(tora: Torah):
     """
     Calculate the number of the phrases in constituency tree for each pasuk in each book.
@@ -286,24 +304,89 @@ def calculate_phrases_per_pasuk_constituency(tora: Torah):
 
     return book_tree_num_of_phrase
 
-def encode_tree_patterns(tora: Torah):
-    patterns = {"dependency_tree": [], "teamim_tree": []}
+def encode_tree_patterns_by_book(tora: Torah):
+    """
+    Encode tree size patterns for each pasuk in each book.
+
+    :param tora: Torah object containing books, where each book has psukim with tree structures.
+    :return: A dictionary where keys are book names and values are Pandas DataFrames with tree sizes.
+    """
+    book_tree_sizes = {}
 
     for book in tora.books:
+        pasuk_data = []
+
         for pasuk in book.psukim:
-            # Check if dependency_tree exists and encode the structure using its method
-            if pasuk.dependency_tree:
-                # Use dependency_tree's encode_structure() method, or you can apply print_tree_structure_only if necessary
-                patterns["dependency_tree"].append(pasuk.dependency_tree.encode_structure())
+            # Initialize tree sizes as None in case they don't exist
+            teamim_tree_size = None
+            constituency_tree_size = None
+            dependency_tree_size = None
 
-            # Check if teamim_tree exists and encode the structure using its print_tree_structure_only method
+            # Compute tree sizes if the tree exists
             if pasuk.teamim_tree:
-                # Here, we use print_tree_structure_only to represent the teamim tree structure
-                encoded_teamim_tree_structure = []
-                pasuk.teamim_tree.print_tree_structure_only(prefix="", is_left=True, is_root=True, is_encoded=True, output_list=encoded_teamim_tree_structure)
-                patterns["teamim_tree"].append("".join(encoded_teamim_tree_structure))
+                teamim_tree_size = pasuk.teamim_tree.size()
+            if pasuk.constituency_tree:
+                constituency_tree_size = pasuk.constituency_tree.size()
+            if pasuk.dependency_tree:
+                dependency_tree_size = pasuk.dependency_tree.size()
 
-    return patterns
+            # Store data for this pasuk
+            pasuk_data.append({
+                "Pasuk ID": pasuk._pasuk_id,
+                "Teamim Tree Size": teamim_tree_size,
+                "Constituency Tree Size": constituency_tree_size,
+                "Dependency Tree Size": dependency_tree_size,
+            })
+
+        # Convert list of dictionaries to a Pandas DataFrame
+        pasuk_df = pd.DataFrame(pasuk_data)
+
+        # Store the DataFrame in the dictionary using the book name as the key
+        book_tree_sizes[book.book_name] = pasuk_df
+
+    return book_tree_sizes
+
+def encode_tree_patterns_by_teuda(tora: Torah):
+    """
+    Encode tree size patterns for each pasuk in each teuda.
+
+    :param tora: Torah object containing teudot, where each teuda has psukim with tree structures.
+    :return: A dictionary where keys are teuda names and values are Pandas DataFrames with tree sizes.
+    """
+    teuda_tree_sizes = {}
+
+    for teuda in tora.teudot:
+        pasuk_data = []
+
+        for pasuk in teuda.psukim:
+            # Initialize tree sizes as None in case they don't exist
+            teamim_tree_size = None
+            constituency_tree_size = None
+            dependency_tree_size = None
+
+            # Compute tree sizes if the tree exists
+            if pasuk.teamim_tree:
+                teamim_tree_size = pasuk.teamim_tree.size()
+            if pasuk.constituency_tree:
+                constituency_tree_size = pasuk.constituency_tree.size()
+            if pasuk.dependency_tree:
+                dependency_tree_size = pasuk.dependency_tree.size()
+
+            # Store data for this pasuk
+            pasuk_data.append({
+                "Pasuk ID": pasuk._pasuk_id,
+                "Teamim Tree Size": teamim_tree_size,
+                "Constituency Tree Size": constituency_tree_size,
+                "Dependency Tree Size": dependency_tree_size,
+            })
+
+        # Convert list of dictionaries to a Pandas DataFrame
+        pasuk_df = pd.DataFrame(pasuk_data)
+
+        # Store the DataFrame in the dictionary using the teuda name as the key
+        teuda_tree_sizes[teuda.teuda_name] = pasuk_df
+
+    return teuda_tree_sizes
 
 def calculate_top_10_words_by_book(tora: Torah):
     """
