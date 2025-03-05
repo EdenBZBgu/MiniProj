@@ -1,4 +1,4 @@
 .idea/*
 .idea/workspace.xml
 torah.pkl
-torah_dmp.pkl
+*.pkl

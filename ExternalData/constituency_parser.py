@@ -50,7 +50,7 @@ def parse_pasuk_constituency(pasuk):
         word_data = {
             "word": w_tag.attrib["dtoken"].split('_')[0],
             "phrase_id": phrase_id,
-            "root": re.sub(r'[^\u0590-\u05FF]$', '', w_tag.attrib["lemma"]),
+            "root": [m.text for m in m_tags if m.attrib.get('type') == 'root'][0],
             "phrase_type": phrase_type_map.get(phrase_id)[0] if phrase_id else None,
             "feature": w_tag.attrib["dtoken"].split('_')[3],
             "phrase_function": phrase_type_map.get(phrase_id)[1] if phrase_id else None
